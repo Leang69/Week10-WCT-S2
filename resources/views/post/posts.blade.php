@@ -16,11 +16,27 @@
                     @empty(!$post->category)
                         <h6 class="card-title">Cetegory: {{ $post->category->name }}</h6>
                     @endempty
+                    <h6 class="card-title">{{ $post->user->name }}</h6>
                 </div>
                 <div class="card-body">
                     <p class="card-text">{{ $post->body }}</p>
                 </div>
+                @cannot('editor')
+                    <div class="card-footer d-flex justify-content-around">
+                        <form action="{{ route('post.edit',$post->id) }}" method="post">
+                            @csrf
+                            <button type="submit" class="btn btn-success">Edit</button>
+                        </form>
+                        <form action="{{ route('post.delete',$post->id) }}" method="post">
+                            @method('delete')
+                            @csrf
+                            <button type="submit" class="btn btn-danger">Delete</button>
+                        </form>
+                    </div>
+                @endcannot
             </div>
+
+
         @endforeach
 
         <div class="row">

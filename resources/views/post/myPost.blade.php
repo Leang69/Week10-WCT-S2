@@ -13,6 +13,7 @@
                     @empty(!$post->category)
                         <h6 class="card-title">Cetegory: {{ $post->category->name }}</h6>
                     @endempty
+                    <h6 class="card-title">{{ $post->user->name }}</h6>
                 </div>
                 <div class="card-body">
 
@@ -24,6 +25,7 @@
                             <button type="submit" class="btn btn-success">Edit</button>
                         </form>
                         <form action="{{ route('post.delete',$post->id) }}" method="post">
+                            @method('delete')
                             @csrf
                             <button type="submit" class="btn btn-danger">Delete</button>
                         </form>

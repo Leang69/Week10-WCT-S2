@@ -64,9 +64,12 @@
                                 </a>
 
                                 <div class="dropdown-menu dropdown-menu-right" aria-labelledby="navbarDropdown">
-                                    <a class="dropdown-item" href="{{ route('myPost')}}">
-                                        My Post
-                                    </a>
+
+                                    @can('editor')
+                                        <a class="dropdown-item" href="{{ route('myPost')}}">
+                                            My Post
+                                        </a>
+                                    @endcan
                                     <a class="dropdown-item" href="{{ route('logout') }}"
                                        onclick="event.preventDefault();
                                                      document.getElementById('logout-form').submit();">

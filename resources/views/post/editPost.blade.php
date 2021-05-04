@@ -4,6 +4,7 @@
     <div class="container">
         <h1>Edit post</h1>
         <form action="{{ route('post.update',$editPost->id) }}" , method="post">
+            @method('put')
             @csrf
             <div class="form-group">
                 <label for="title">Post Title</label>

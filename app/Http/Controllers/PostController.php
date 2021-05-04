@@ -11,8 +11,8 @@ class PostController extends Controller
 {
     public function myPost()
     {
-        $post = Post::where('user_id',Auth::id())->get();
-        return view('post.myPost',[
+        $post = Post::where('user_id', Auth::id())->get();
+        return view('post.myPost', [
             'myPosts' => $post
         ]);
     }
@@ -20,19 +20,21 @@ class PostController extends Controller
     public function posts()
     {
         $posts = Post::paginate(10);
-        return view('post.posts',[
+        return view('post.posts', [
             'posts' => $posts
         ]);
     }
 
-    public function create(){
+    public function create()
+    {
         $categories = Category::all();
-        return view('post.createPost',[
+        return view('post.createPost', [
             'categories' => $categories
         ]);
     }
 
-    public function store(Request $request){
+    public function store(Request $request)
+    {
 
         $post = new Post;
         $post->title = $request->title;
@@ -44,27 +46,31 @@ class PostController extends Controller
 
     }
 
-    public function delete($id){
-        Post::find($id)->delete();
-        $post = Post::where('user_id',Auth::id())->get();
-        return redirect(route('myPost'));
+    public function delete(Post $post)
+    {
+        $post->delete();
+        if (Auth::user()->role === 'editor')
+            return redirect(route('myPost'));
+        else return redirect(route('posts'));
     }
 
-    public function edit($id){
-        $post = Post::find($id);
+    public function edit(Post $post)
+    {
         $categories = Category::all();
-        return view('post.editPost',[
-            'editPost' => $post,'categories' => $categories
+        return view('post.editPost', [
+            'editPost' => $post, 'categories' => $categories
         ]);
     }
 
-    public function update(Request $request,$id){
-        $post = Post::find($id);
+    public function update(Request $request, Post $post)
+    {
         $post->title = $request->title;
         $post->category_id = $request->category_id;
         $post->body = $request->body;
         $post->save();
-        return redirect(route('myPost'));
+        if (Auth::user()->role === 'editor')
+            return redirect(route('myPost'));
+        else return redirect(route('posts'));
     }
 
 }
